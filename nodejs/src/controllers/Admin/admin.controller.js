@@ -28,8 +28,11 @@ module.exports.registerAdmin = async (req, res) => {
 
 module.exports.loginAdmin = async(req, res) => {
     try {
+
         const admin = await adminService.findSingleAdmin({email: req.body.email})
-        
+
+        if (!admin) return res.status(404).json(errorRes(404, true, "Admin not found"));
+
 
         const isPassword = await bcrypt.compare(req.body.password, admin.password); // ithe compare madhe compare(jithun password yetoy, encrypt password kuthun yetoy te);
         
